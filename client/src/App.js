@@ -8,9 +8,20 @@ import Contact from "./components/Contact";
 import Logout from "./components/Logout";
 import Login from "./components/Login"
 import NavBar from './components/NavBar';
-import Footer from "./components/Footer";
+import AdminLogin from "./adminComponents/AdminLogin";
+import AdminSignUp from "./adminComponents/AdminSignUp";
+import Orders from "./components/Orders";
+import AdminLanding from "./adminComponents/AdminLanding";
+import Commuter from "./adminComponents/Commuter";
+import Driver from "./adminComponents/Driver";
+import CreateDriver from "./adminComponents/CreateDriver";
+import Dashboard from "./adminComponents/Dashboard";
+import SideBar from "./adminComponents/SideBar";
+
 
 function App() {
+
+  const [admin, setAdmin] = useState([]);
 
   const [users, setUsers] = useState([]);
 
@@ -32,11 +43,11 @@ function App() {
   //auto-login user
   useEffect(() => {
     fetch('/me')
-    .then(res => {
-      if (res.ok){
-        res.json().then(user => setCommuter(user));
-      }
-    });
+      .then(res => {
+        if (res.ok) {
+          res.json().then(user => setCommuter(user));
+        }
+      });
   }, []);
 
   // logout user
@@ -44,23 +55,47 @@ function App() {
     fetch('/logout', {
       method: 'DELETE'
     })
-    .then(res => {
-      if (res.ok) {
-        setCommuter(null);
-        setIsLoggedIn(false)
-        return <Route path='/' element={<Login />}/>;
-      }
-    })
+      .then(res => {
+        if (res.ok) {
+          setCommuter(null);
+          setIsLoggedIn(false)
+          return <Route path='/' element={<Login />} />;
+        }
+      })
   };
 
   useEffect(() => {
     fetch("/commuters").then((r) => r.json()).then(setUsers);
   }, []);
+  useEffect(() => {
+    fetch("/admins").then((res) => res.json()).then(setAdmin);
+  }, [])
 
-  function addUser (newUser) {
-    const updateUsersArray = [...users,newUser];
+  function addUser(newUser) {
+    const updateUsersArray = [...users, newUser];
     setUsers(updateUsersArray)
   }
+
+  function addAdmin(newAdmin) {
+    const updateAdmin = [...admin, newAdmin];
+    setAdmin(updateAdmin)
+  }
+
+  //////////////////////////
+  // fetch drivers data
+  const [driver, setDriver] = useState([]);
+
+  useEffect(() => {
+    fetch("/drivers")
+      .then((r) => r.json())
+      .then(setDriver);
+  }, []);
+
+  function addDriver(newDriver) {
+    const updateDriver = [...driver, newDriver];
+    setDriver(updateDriver);
+  }
+  //////////////////////////
 
   if (isLoggedIn) {
     return (
@@ -92,6 +127,12 @@ function App() {
           />
           <Route
             exact
+            path="/orders"
+            element={<Orders currentCommuter={commuter} />}
+          />
+
+          <Route
+            exact
             path="/contact"
             element={<Contact isLoggedIn={setIsLoggedIn} />}
           />
@@ -103,15 +144,21 @@ function App() {
             }
           />
         </Routes>
+<<<<<<< HEAD
         <Footer />
         
+=======
+>>>>>>> 44ffdef643ca745abe34f27c53a3236b1131d42e
       </div>
     );
   } else {
     return (
       <div>
         {/* <Login onLogin={setCommuter} isLoggedIn={setIsLoggedIn} /> */}
+        {/* <SideBar /> */}
+        
         <Routes>
+        
           <Route
             exact
             path="/signup"
@@ -122,9 +169,22 @@ function App() {
             path="/login"
             element={<Login onLogin={setCommuter} isLoggedIn={setIsLoggedIn} />}
           />
+          <Route path="/adminLogin" element={<AdminLogin />} />
+
+          <Route
+            path="/adminSignup"
+            element={<AdminSignUp onAddAdmin={addAdmin} />}
+          />
+          <Route path="/admin/*" element={<AdminLanding />} />
+          {/* <Route path='/dash' element={<Dashboard />} /> */}
+          <Route path='/commuter' element={<Commuter />} />
+          <Route path='/driver' element={<Driver />} />
+          <Route path='/createDriver' element={<CreateDriver onAddDriver={addDriver} />} />
         </Routes>
+
       </div>
     );
+
   }
 }
 

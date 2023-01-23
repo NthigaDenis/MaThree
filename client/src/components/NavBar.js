@@ -36,6 +36,11 @@ const NavBar = () => {
     },
     {
       id: 4,
+      link: "/orders",
+      name: "rides"
+    },
+    {
+      id: 5,
       link: "/contact",
       name: "contact",
     },
@@ -50,7 +55,7 @@ const NavBar = () => {
     //   name: "login",
     // },
     {
-      id: 7,
+      id: 6,
       link: "/logout",
       name: "logout",
     },
@@ -64,7 +69,7 @@ const NavBar = () => {
         <ul className="nav-list">
           {links.map(({ id, name, link }) => (
             <li key={id} className="nav-items">
-              <Link style={{color:"gray", textDecoration:"none"}} to={link}>{name}</Link>
+              <Link style={{color:"#EBEBEB", textDecoration:"none"}} to={link}>{name}</Link>
             </li>
           ))}
         </ul>

@@ -9,9 +9,6 @@ function Login( {onLogin, isLoggedIn} ) {
   const [error, setError] = useState([]);
   const navigate = useNavigate();
 
-  //console error
-  console.log(error);
-
   function handleSubmit(e) {
     e.preventDefault();
     fetch("/login", {
@@ -71,6 +68,10 @@ function Login( {onLogin, isLoggedIn} ) {
       </form>
       <div>
         Create an account <Link to='/signup' className="auth-route">Register</Link>
+      </div>
+
+      <div style={{marginTop: '10px'}}>
+        Admin Section <Link to='/adminLogin' className="">Admin</Link>
       </div>
     </div>
   );
