@@ -144,11 +144,6 @@ function App() {
             }
           />
         </Routes>
-<<<<<<< HEAD
-        <Footer />
-        
-=======
->>>>>>> 44ffdef643ca745abe34f27c53a3236b1131d42e
       </div>
     );
   } else {
